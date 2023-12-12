@@ -1,75 +1,63 @@
 ﻿namespace Collections;
 
-public class ArrayList<T> : ICollection<T>
-{
-    private int _length = 0;
+public class ArrayList<T> : ICollection<T> {
+    private int _length;
     private int _capacity;
     private T[] _items;
 
-    public ArrayList(int capacity)
-    {
+    public ArrayList(int capacity) {
+        _length = 0;
         _capacity = capacity;
         _items = new T[capacity];
     }
 
-    public bool Add(T item)
-    {
-        // array[6] -> indices e [0,6) = [0..5]
-        // array[6] -> IndexOutOfBound
+    public bool Add(T item) {
         // O(1)
-        if (_items.Length < _capacity)
-        {
+        if (_length < _capacity) {
             _items[_length++] = item;
             return true;
         }
 
-        // O(n)
+        // O(n) / n = _items.Length
         _capacity *= 2;
         Array.Resize(ref _items, _capacity);
         _items[_length++] = item;
         return true;
     }
 
-    public bool Contains(T item)
-    {
-        // O(n)
-        for (int index = 0; index < _length; index++)
-        {
-            if (_items[index]!.Equals(item)) return true;
-        }
+    public bool Remove(T item) {
+        int removeIndex = -1;
 
-        return false;
-    }
-
-    public bool Remove(T item)
-    {
-        int removedIndex = -1;
-        // O(n)
-        for (int index = 0; index < _length; index++)
-        {
-            if (_items[index]!.Equals(item))
-            {
-                removedIndex = index;
+        for (int index = 0; index < _length; index++) {
+            if (_items[index]!.Equals(item)) {
+                removeIndex = index;
                 break;
             }
         }
 
-        if (removedIndex == -1) return false;
+        if (removeIndex == -1) return false;
 
-        if (removedIndex == _length - 1)
-        {
+        if (removeIndex == _capacity - 1) {
             _length--;
             return true;
         }
 
-        // O(n)
-        for (int index = removedIndex; index < _length - 1; index++)
-        {
+        for (int index = removeIndex; index < _capacity - 1; index++) {
             _items[index] = _items[index + 1];
         }
 
         _length--;
         return true;
+    }
+
+    public bool Contains(T item) {
+        for (int index = 0; index < _length; index++) {
+            if (_items[index]!.Equals(item)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 
