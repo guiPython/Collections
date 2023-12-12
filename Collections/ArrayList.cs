@@ -56,8 +56,11 @@ public class ArrayList<T> : ICollection<T>
 
         if (removedIndex == -1) return false;
 
-        _length--;
-        if (removedIndex == _length - 1) return true;
+        if (removedIndex == _length - 1)
+        {
+            _length--;
+            return true;
+        }
 
         // O(n)
         for (int index = removedIndex; index < _length - 1; index++)
@@ -65,6 +68,7 @@ public class ArrayList<T> : ICollection<T>
             _items[index] = _items[index + 1];
         }
 
+        _length--;
         return true;
     }
 }
